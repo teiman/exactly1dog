@@ -2281,6 +2281,14 @@ void Con_DrawConsole (int lines, qboolean drawbg, qboolean drawinput)
 	if (lines <= 0)
 		return;
 
+
+	//Tei, fck the console!
+	//if( cls.state != ca_connected)
+	//	return;
+
+	//if (cl.time < 1)
+	//	return;
+
 	con_vislines = lines * vid.conheight / glheight;
 	GL_SetCanvas (CANVAS_CONSOLE);
 

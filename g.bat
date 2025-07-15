@@ -1,7 +1,8 @@
 
 
-cd C:\gamedev\exactly1dog\exactly1dog\build\Release
+D:
+cd quake
+onedog.exe
 
-ironwail -gamedir c:\quake 
-
+c:
 cd C:\gamedev\exactly1dog\exactly1dog
