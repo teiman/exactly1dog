@@ -31,7 +31,7 @@ if (WIN32)
 endif()
 
 # Era file(GLOB  IWAIL_SRC CONFIGURE_DEPENDS "Quake/*.c" "Quake/*.h")
-file(GLOB_RECURSE  IWAIL_SRC CONFIGURE_DEPENDS "Quake/*.c" "Quake/*.h")
+file(GLOB_RECURSE  IWAIL_SRC CONFIGURE_DEPENDS "Quake/*.c" "Quake/*.cpp" "Quake/*.h")
 
 list(REMOVE_ITEM IWAIL_SRC ${CMAKE_CURRENT_SOURCE_DIR}/Quake/lodepng.h)
 list(REMOVE_ITEM IWAIL_SRC ${CMAKE_CURRENT_SOURCE_DIR}/Quake/lodepng.c)
@@ -70,6 +70,7 @@ include_directories(Quake/snd)
 include_directories(Quake/sv)
 include_directories(Quake/includes)
 include_directories(Quake/r)
+include_directories(Quake/onedogmod)
 
 add_executable(ironwail ${IWAIL_SRC})
 if (UNIX)

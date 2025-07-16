@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "bgmusic.h"
 #include "steam.h"
 
+#include "onedog.h"
+
 const char *svc_strings[] =
 {
 	"svc_bad",
@@ -347,6 +349,9 @@ void CL_ParseServerInfo (void)
 
 //johnfitz -- tell user which protocol this is
 	Con_Printf ("Using protocol %i\n", i);
+
+
+	test_method();//Tei test
 
 // first we go through and touch all of the precache data that still
 // happens to be in the cache, so precaching something else doesn't
