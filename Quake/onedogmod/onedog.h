@@ -5,7 +5,9 @@
 extern "C" {
 #endif
 
-void test_method(void);
+
+void onedog_screen_start(void);
+void onedog_overtext_rendering(void);
 
 #ifdef __cplusplus
 }

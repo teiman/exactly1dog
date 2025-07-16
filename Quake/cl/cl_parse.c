@@ -351,7 +351,7 @@ void CL_ParseServerInfo (void)
 	Con_Printf ("Using protocol %i\n", i);
 
 
-	test_method();//Tei test
+	onedog_screen_start();//Tei od salute
 
 // first we go through and touch all of the precache data that still
 // happens to be in the cache, so precaching something else doesn't
