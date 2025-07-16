@@ -56,16 +56,20 @@ elseif (WIN32)
 endif()
 
 if (PC_MPG123_FOUND)
-    list(REMOVE_ITEM IWAIL_SRC ${CMAKE_CURRENT_SOURCE_DIR}/Quake/snd_mp3.c)
+    list(REMOVE_ITEM IWAIL_SRC ${CMAKE_CURRENT_SOURCE_DIR}/Quake/snd/snd_mp3.c)
 elseif (PC_MAD_FOUND)
-    list(REMOVE_ITEM IWAIL_SRC ${CMAKE_CURRENT_SOURCE_DIR}/Quake/snd_mpg123.c)
+    list(REMOVE_ITEM IWAIL_SRC ${CMAKE_CURRENT_SOURCE_DIR}/Quake/snd/snd_mpg123.c)
 endif()
 
 
 include_directories(Quake)
+include_directories(Quake/cl)
 include_directories(Quake/gl)
 include_directories(Quake/net)
-
+include_directories(Quake/snd)
+include_directories(Quake/sv)
+include_directories(Quake/includes)
+include_directories(Quake/r)
 
 add_executable(ironwail ${IWAIL_SRC})
 if (UNIX)

@@ -1410,7 +1410,7 @@ void M_SinglePlayer_Key (int key)
 				Cbuf_AddText ("disconnect\n");
 			Cbuf_AddText ("maxplayers 1\n");
 			Cbuf_AddText ("deathmatch 0\n"); //johnfitz
-			Cbuf_AddText ("coop 0\n"); //johnfitz
+			Cbuf_AddText ("coop 1\n"); //johnfitz
 			Cbuf_AddText ("campaign 1\n");
 			Cbuf_AddText ("map start\n");
 			break;
