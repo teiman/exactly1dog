@@ -4,23 +4,13 @@ extern "C" {
     #include "quakedef.h"
 }
 
-
-extern "C" void onedog_screen_start(){
-	//Con_Printf ("Corruption detected!...\n");
-	Con_Printf ( va("%cCorruption detected!...\n",2));
-}
-
-#define ALIGN_LEFT		0
-#define ALIGN_CENTER	1
-#define ALIGN_RIGHT		2
-
 extern "C" void M_PrintAlignedEx (int cx, int cy, int align, int dim, qboolean color, const char *str);
 extern "C" void M_Print (int cx, int cy, const char *str);
+extern "C" void M_PrintEx (int cx, int cy, int dim /* font size */, const char *str);
 
 double current_time(){
 	return cl.time;
 }
-
 
 char* randomizerText(const char* text) {
 	static double last_glitch_time = 0;
@@ -58,7 +48,11 @@ char* randomizerText(const char* text) {
 }
 
 
-extern "C" void M_PrintEx (int cx, int cy, int dim /* font size */, const char *str);
+
+extern "C" void onedog_screen_start(){
+	Con_Printf ( va("%cCorruption detected!...\n",2));
+}
+
 
 extern "C" void onedog_overtext_rendering(){
 	if (cls.state != ca_connected)// otherwise the game lagsss
