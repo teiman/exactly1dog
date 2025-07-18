@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "steam.h"
 #include <setjmp.h>
 
+#include "onedog.h" // for onedog_gameplay();
+
 /*
 
 A server can allways be started, even if the system started out as a client
@@ -1260,13 +1262,18 @@ void _Host_Frame (double time)
 		}
 		else
 			accumtime -= host_netinterval;
+
 		CL_SendCmd ();
+
 		if (sv.active)
 		{
 			PR_SwitchQCVM(&sv.qcvm);
 			Host_ServerFrame ();
+			onedog_gameplay();
 			PR_SwitchQCVM(NULL);
 		}
+
+
 		host_frametime = realframetime;
 		Cbuf_Waited();
 		ranserver = true;

@@ -1606,8 +1606,45 @@ void PR_ShutdownExtensions (void)
 		PR_ReloadPics(true);
 }
 
+//THREAD_LOCAL qcvm_t			*qcvm;
 THREAD_LOCAL qcvm_t			*qcvm;
 THREAD_LOCAL globalvars_t	*pr_global_struct;
+
+
+
+edict_t* find_first_player(void) {
+	int		i;
+	edict_t	*e = NULL;
+
+	Con_Printf( "Se va a buscar un player\n");
+
+	for (i=0 ; i<qcvm->num_edicts ; i++)
+	{
+		e = EDICT_NUM(i);
+
+		if (!e)
+			continue;
+
+		if (e->free)
+			continue;
+
+		const char *classname = PR_GetString (e->v.classname);
+
+		if ( !strcmp (classname, "player") ){
+			Con_Printf("Encontrado!\n");
+			break;
+		}
+	}
+
+	if (i == qcvm->num_edicts){
+		Con_Printf("Miro todos y no encontro nada\n");
+		e = NULL;	
+	}
+
+    return e;
+}
+
+
 
 void PR_SwitchQCVM(qcvm_t *nvm)
 {

@@ -2,64 +2,71 @@
 
 extern "C" {
     #include "quakedef.h"
-}
 
-extern "C" void M_PrintAlignedEx (int cx, int cy, int align, int dim, qboolean color, const char *str);
-extern "C" void M_Print (int cx, int cy, const char *str);
-extern "C" void M_PrintEx (int cx, int cy, int dim /* font size */, const char *str);
+	void M_PrintAlignedEx (int cx, int cy, int align, int dim, qboolean color, const char *str);
+	void M_Print (int cx, int cy, const char *str);
+	void M_PrintEx (int cx, int cy, int dim /* font size */, const char *str);
 
-double current_time(){
-	return cl.time;
-}
+	extern "C" void onedog_screen_start();
+	extern "C" void onedog_overtext_rendering();
+	extern "C" void onedog_gameplay();
 
-char* randomizerText(const char* text) {
-	static double last_glitch_time = 0;
-	static double glitch_duration = 0.4;
-	static double next_glitch_delay = 0.4;
-	static int is_glitching = 0;
-	static char buffer[1024];
+	int NUM_FOR_EDICT(edict_t*);
+} 
 
-	double time = current_time();
+#include "onedog.h"
+#include "cabeza.h"
 
-	if (!text) return "";
+void onedog_cleanup();
 
-	if (!is_glitching && time - last_glitch_time > next_glitch_delay) {
-		// Empezar nuevo glitch
-		strncpy(buffer, text, sizeof(buffer));
-		buffer[sizeof(buffer) - 1] = '\0';
+static Cabeza* cabeza = nullptr;
 
-		size_t len = strlen(buffer);
-		for (size_t i = 0; i < len; i++) {
-			if (rand() % 100 > 80) {
-				const char glitch_chars[] = "@#$%&X!";
-				buffer[i] = glitch_chars[rand() % (sizeof(glitch_chars) - 1)];
-			}
-		}
-
-		last_glitch_time = time;
-		is_glitching = 1;
-	}
-
-	if (is_glitching && time - last_glitch_time > glitch_duration) {
-		is_glitching = 0;
-	}
-
-	return is_glitching ? buffer : (char*)text;
-}
-
-
-
-extern "C" void onedog_screen_start(){
+void onedog_screen_start(){
 	Con_Printf ( va("%cCorruption detected!...\n",2));
+
+	onedog_cleanup();
 }
 
 
-extern "C" void onedog_overtext_rendering(){
+void onedog_cleanup(){
+	if (cabeza != nullptr){
+		delete cabeza;
+        cabeza = nullptr;
+	}
+}
+
+void onedog_cabeza(){
+	if(!cabeza)
+		cabeza = Cabeza::Allocate();
+	
+	cabeza && cabeza->sync();
+}
+
+void onedog_gameplay()
+{
+	if( current_time()<5) // skip first seconds
+		return; 
+
+	onedog_cabeza(); //creates the cabeza and animate it 
+}
+
+extern "C" void Sbar_DrawPicAlpha (int x, int y, qpic_t *pic, float alpha);
+
+extern "C" static qpic_t *sb_sigil[4];
+extern "C" qpic_t *Sbar_InventoryBarPic (void);
+
+void onedog_overtext_rendering()
+{
 	if (cls.state != ca_connected)// otherwise the game lagsss
 		return;
 
 	char text[] = "Corruption level: 0 - time: %f";
 
 	M_PrintEx (320/2, 32, 16,  randomizerText(va(text, cl.time)) );	
+
+	cabeza && cabeza->sync_position();
+
+	//Sbar_DrawPicAlpha (50, 50, sb_sigil[1], 1);
+	//Sbar_DrawPicAlpha (100, 100, Sbar_InventoryBarPic () , 1);	 
 }
 

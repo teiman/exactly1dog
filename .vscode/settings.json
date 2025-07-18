@@ -1,0 +1,18 @@
+{
+    "files.associations": {
+        "*.q1": "c",
+        "deque": "cpp",
+        "memory": "cpp",
+        "sstream": "cpp",
+        "vector": "cpp",
+        "xiosbase": "cpp",
+        "xlocale": "cpp",
+        "xmemory": "cpp",
+        "xstring": "cpp",
+        "xtree": "cpp",
+        "xutility": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "streambuf": "cpp"
+    }
+}
