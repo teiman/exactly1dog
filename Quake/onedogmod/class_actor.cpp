@@ -1,6 +1,6 @@
 
 
-#include "actor.h"
+#include "class_actor.h"
 
 
 extern "C" void SV_LinkEdict (edict_t *ent, qboolean touch_triggers);

@@ -1,0 +1,42 @@
+
+#include "class_ConversationStateMachine.h"
+#include <cstdlib>
+#include <ctime>
+
+ConversationStateMachine::ConversationStateMachine() {
+    // Seed the random number generator
+    //srand(static_cast<unsigned int>(time(nullptr)));
+
+    // Initialize responses for each state
+    responses = {
+        {ConversationState::WaitingForLoading, {"Greetings, traveler!", "Hello fighter!"}},
+        {ConversationState::Saluting, {"It's a beautiful day, isn't it?", "The weather is quite pleasant today.", "I love this sunny weather!"}},
+		{ConversationState::WaitingEvent, {"It's a beautiful day, isn't it?", "The weather is quite pleasant today.", "I love this sunny weather!"}},
+    };
+
+    // Start with the greeting state
+    currentState = ConversationState::WaitingForLoading;
+}
+
+std::string ConversationStateMachine::getRandomResponse(const ConversationState& state) {
+    std::vector<std::string> possibleResponses = responses[state];
+    int index = rand() % possibleResponses.size();
+    return possibleResponses[index];
+}
+
+void ConversationStateMachine::handleEvent(ConversationEvent event) {
+    switch (currentState) {
+		case ConversationState::WaitingForLoading:
+			if (event == ConversationEvent::PlayerReceivedSalute){
+
+			}
+			break;
+        case ConversationState::Saluting:
+            break;
+
+    }
+}
+
+std::string ConversationStateMachine::getCurrentResponse() {
+    return getRandomResponse(currentState);
+}

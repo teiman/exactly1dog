@@ -2149,3 +2149,21 @@ void Sbar_FinaleOverlay (void)
 	Draw_Pic ( (320 - pic->width)/2, 16, pic); //johnfitz -- stretched menus
 }
 
+
+
+qpic_t * Sbar_getSigil( int i){
+	return sb_sigil[i];
+}
+
+qpic_t * Sbar_getFace(int dx){	
+	switch(dx){
+		case 1:
+			return sb_face_invis_invuln;
+		case 2:
+			return sb_face_invuln;
+		case 3:
+			return sb_face_quad;
+	}
+
+	return sb_faces[4][0];
+}

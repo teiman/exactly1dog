@@ -6,7 +6,7 @@ extern "C" {
 }
 
 #include "onedog.h"
-#include "cabeza.h"
+#include "class_cabeza.h"
 #include "mathlib.h"  // For AngleVectors and VectorMA macros/functions
 #include "progs.h"    // For SET_MODEL and other engine defs
 

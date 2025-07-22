@@ -1,0 +1,36 @@
+#include <vector>
+#include <string>
+#include <map>
+
+// Define possible states for the conversation
+enum class ConversationState {
+    WaitingForLoading,
+    Saluting,
+    WaitingEvent,
+};
+
+// Define events that can trigger state transitions
+enum class ConversationEvent {
+    PlayerReceivedSalute,
+    On777,
+};
+
+// Define the state machine class
+class ConversationStateMachine {
+private:
+    ConversationState currentState;
+    std::map<ConversationState, std::vector<std::string>> responses;
+
+    // Function to get a random response for the current state
+    std::string getRandomResponse(const ConversationState& state);
+
+public:
+    ConversationStateMachine();
+
+    // Function to handle events and transition between states
+    void handleEvent(ConversationEvent event);
+
+    // Function to get the current response based on the state
+    std::string getCurrentResponse();
+};
+

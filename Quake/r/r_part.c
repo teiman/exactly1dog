@@ -706,9 +706,22 @@ static void R_DrawParticles_Real (qboolean alpha, qboolean showtris)
 	// this bakes in the additional scaling of vup and vright by 1.5f for billboarding,
 	// then down by 0.25f for quad particles
 	scalex = scaley = texturescalefactor * 0.375f;
+
 	// projection factors (see GL_FrustumMatrix), negated to make things easier in the shader
 	scalex *=  r_matproj[1*4 + 0]; // -1 / tan (fovx/2)
 	scaley *= -r_matproj[2*4 + 1]; // -1 / tan (fovy/2)
+
+
+
+	//if(rand()%10>5)
+	//	GL_Uniform3fFunc (0, scalex + rand()%12 , scaley, uvscale);
+	//else
+	//	GL_Uniform3fFunc (0, scalex , scaley + rand()%12 , uvscale);
+
+	// Tei: I wish I could do this, but migth looks bad in some resolution
+	// and I don't fully understand the logic of it 
+	//GL_Uniform3fFunc (0, scalex, scaley +2 , uvscale);
+
 	GL_Uniform3fFunc (0, scalex, scaley, uvscale);
 
 	if (alpha)

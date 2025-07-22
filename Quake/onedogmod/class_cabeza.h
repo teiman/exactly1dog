@@ -1,6 +1,6 @@
 
 
-#include "actor.h"
+#include "class_actor.h"
 
 class Cabeza : public Actor {
 public:

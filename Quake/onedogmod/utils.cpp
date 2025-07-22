@@ -11,8 +11,8 @@ double current_time(){
 
 char* randomizerText(const char* text) {
 	static double last_glitch_time = 0;
-	static double glitch_duration = 0.4;
-	static double next_glitch_delay = 0.4;
+	static double glitch_duration = 0.3;
+	static double next_glitch_delay = 0.8;
 	static int is_glitching = 0;
 	static char buffer[1024];
 
@@ -28,7 +28,7 @@ char* randomizerText(const char* text) {
 		size_t len = strlen(buffer);
 		for (size_t i = 0; i < len; i++) {
 			if (rand() % 100 > 80) {
-				const char glitch_chars[] = "@#$%&X!";
+				const char glitch_chars[] = "_ ";
 				buffer[i] = glitch_chars[rand() % (sizeof(glitch_chars) - 1)];
 			}
 		}
