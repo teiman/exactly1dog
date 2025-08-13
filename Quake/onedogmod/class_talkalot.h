@@ -30,7 +30,7 @@ public:
 	void updateMessage();
 	
 private:
-	std::string lastMsg = nullptr;
+	std::string lastMsg = "";
 
 	TalkAlot() {}                          // private constructor
     TalkAlot(const TalkAlot&) = delete; // prevent copy

@@ -23,9 +23,9 @@ std::string TalkAlot::getCurrentString()
 }
 
 std::map<ConversationState, std::vector<std::string>> responses = {
-	{ConversationState::WaitingForLoading, {}},
+	{ConversationState::WaitingForLoading, {""}},
 	{ConversationState::Saluting, {"The watchers will watch you fight","Oh, a fine fighter from Earth", "You would do a fine adition to our forces"}},
-	{ConversationState::WaitingEvent, {}},
+	{ConversationState::WaitingEvent, {""}},
 };
 	
 
@@ -50,19 +50,23 @@ void TalkAlot::updateMessage()
 }
 
 void TalkAlot::handleEvent(TalkEvent event){
-
-	if(currentState == ConversationState::WaitingForLoading)
+	if(currentState == ConversationState::WaitingForLoading){
 		if(event == TalkEvent::Loaded){
+			Con_Printf("[debug] Was waiting, now will salute\n");
 			currentState = ConversationState::Saluting;			
 			updateMessage();
+			return;
 		}	
+	}
+
+	//Con_Printf("[debug] waiting... %f\n", current_time() );
 }
 
 
 
 const char * talkalot_getMessage()
 {
-	TalkAlot &talker = TalkAlot::getInstance();
+	TalkAlot &talker = TalkAlot::getInstance();	
 
 	const std::string& line = talker.getCurrentString();
 

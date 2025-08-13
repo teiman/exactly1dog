@@ -9,6 +9,37 @@ double current_time(){
 	return cl.time;
 }
 
+float min( float a, float b){
+	if(a<b)
+		return a;
+	return b;
+}
+
+
+
+void M_PrintExCorrupted (int cx, int cy, int dim, const char *str)
+{
+	static float init_time = 0;
+	float distort = 0;
+
+	if(current_time() - init_time < 0 )
+		init_time = 0; //Reset of the timer when it becomes negative aka... the level reloads
+
+	if(init_time == 0)
+		init_time = current_time();
+
+
+	distort = min(1, (current_time() - init_time)*0.8 );
+
+	while (*str)
+	{
+		Draw_CharacterEx (cx, cy, dim, dim, (*str)+128);
+		str++;
+		cx += dim * distort;
+	}
+}
+
+
 char* randomizerText(const char* text) {
 	static double last_glitch_time = 0;
 	static double glitch_duration = 0.3;

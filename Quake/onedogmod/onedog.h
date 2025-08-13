@@ -21,3 +21,5 @@ edict_t* find_first_player(void);
 double current_time();
 char* randomizerText(const char* text);
 void VectoAngles(const vec3_t vec, vec3_t angles);
+
+void M_PrintExCorrupted (int cx, int cy, int dim, const char *str);

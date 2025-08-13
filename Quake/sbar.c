@@ -24,6 +24,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 #include "onedog.h"
 
+float V_CalcBob (void);
+
 static int		sb_updates;		// if >= vid.numpages, no update needed
 
 #define STAT_MINUS		10	// num frame for '-' stats digit
@@ -273,6 +275,9 @@ void Sbar_Init (void)
 Sbar_DrawPic -- johnfitz -- rewritten now that GL_SetCanvas is doing the work
 =============
 */
+
+
+
 void Sbar_DrawPic (int x, int y, qpic_t *pic)
 {
 	Draw_Pic (x, y + 24, pic);
@@ -285,8 +290,10 @@ Sbar_DrawPicAlpha -- johnfitz
 */
 void Sbar_DrawPicAlpha (int x, int y, qpic_t *pic, float alpha)
 {
+	
+
 	GL_SetCanvasColor(1,1,1,alpha);
-	Draw_Pic (x, y + 24, pic);
+	Draw_Pic (x, y, pic);
 	GL_SetCanvasColor(1,1,1,1); // ericw -- changed from glColor3f to work around intel 855 bug with "r_oldwater 0" and "scr_sbaralpha 0"
 }
 
@@ -307,7 +314,7 @@ Sbar_DrawString -- johnfitz -- rewritten now that GL_SetCanvas is doing the work
 */
 void Sbar_DrawString (int x, int y, const char *str)
 {
-	Draw_String (x, y + 24, str);
+	Draw_String (x + V_CalcBob(), y + 24, str);
 }
 
 /*
@@ -2163,6 +2170,8 @@ qpic_t * Sbar_getFace(int dx){
 			return sb_face_invuln;
 		case 3:
 			return sb_face_quad;
+		case 4:
+			return sb_face_invis;
 	}
 
 	return sb_faces[4][0];

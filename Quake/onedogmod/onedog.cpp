@@ -10,6 +10,11 @@ extern "C" {
 	extern "C" void onedog_screen_start();
 	extern "C" void onedog_overtext_rendering();
 	extern "C" void onedog_gameplay();
+	extern "C" void Sbar_DrawPicAlpha (int x, int y, qpic_t *pic, float alpha);
+	extern "C" qpic_t *Sbar_InventoryBarPic (void);
+	extern "C" qpic_t * Sbar_getSigil( int i);
+	extern "C" qpic_t * Sbar_getFace(int dx);
+	extern "C" void M_PrintWhiteEx (int cx, int cy, int dim, const char *str);
 
 	int NUM_FOR_EDICT(edict_t*);
 } 
@@ -20,7 +25,9 @@ extern "C" {
 
 void onedog_cleanup();
 
+
 static Cabeza* cabeza = nullptr;
+
 
 void onedog_screen_start(){
 	Con_Printf ( va("%cCorruption detected!...\n",2));
@@ -47,16 +54,11 @@ void onedog_gameplay()
 {
 	if( current_time()<5) // skip first seconds
 		return; 
-
-	if(0)		
-		talkalot_event(TalkEvent::Loaded);
+	
+	talkalot_event(TalkEvent::Loaded);
 }
 
-extern "C" void Sbar_DrawPicAlpha (int x, int y, qpic_t *pic, float alpha);
-extern "C" qpic_t *Sbar_InventoryBarPic (void);
-extern "C" qpic_t * Sbar_getSigil( int i);
-extern "C" qpic_t * Sbar_getFace(int dx);
-extern "C" void M_PrintWhiteEx (int cx, int cy, int dim, const char *str);
+
 
 double last_step_time  = 0;
 int slot_value[3];
@@ -121,7 +123,6 @@ void update_slots(){
 	slot_start_time1 = update_slot_raw(0,slot_start_time1, speed);
 	slot_start_time2 = update_slot_raw(1,slot_start_time2, speed);
 	slot_start_time3 = update_slot_raw(2,slot_start_time3, speed);
-	//M_PrintEx (50, 300, 16, va("speed=%f", speed) );	
 }
 
 
@@ -130,25 +131,19 @@ void onedog_overtext_rendering()
 {
 	if (cls.state != ca_connected)// otherwise the game lagsss
 		return;
-	//cabeza && cabeza->sync_position();
 
 	char text[] = "Corruption level 0%%";
 	M_PrintEx (50, 450, 8,  randomizerText(va(text)) );	
 
-
 	//this appear to be in 320-200 screen
-	Sbar_DrawPicAlpha (50, 50, Sbar_getFace(1), 1);//Invis face
+	Sbar_DrawPicAlpha (50, 50, Sbar_getFace(1), 1);//Invis face bg
+	Sbar_DrawPicAlpha (50, 50, Sbar_getFace(2), sin(current_time()*4)/3);//Invis face
+		
+	if( talkalot_getMessage() != nullptr)
+		//M_PrintEx (50+ 32, 50 + 25, 16, talkalot_getMessage());	
+		M_PrintExCorrupted (50+ 32, 50, 16, talkalot_getMessage());	
 
-	//this appears to be in "current res" pixel size???
-
-	
-	if(0){
-		if( talkalot_getMessage() != nullptr)
-			M_PrintEx (50+ 32, 50 + 25, 16, talkalot_getMessage());	
-	}
-
-	//M_PrintEx (50, 400, 16, "0");	
-
+		// Random numbers that generate events
 	update_slots();
 }
 
