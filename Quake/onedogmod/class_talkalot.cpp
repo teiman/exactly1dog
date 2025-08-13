@@ -1,6 +1,9 @@
 
 extern "C" {
 	#include "quakedef.h"
+	void S_LocalSound (const char *name);
+
+	extern cvar_t sv_gravity;
 }
 
 #include <cstdlib>
@@ -16,6 +19,7 @@ extern "C" {
 std::string TalkAlot::getCurrentString()
 {
 	if( current_time() - start_time > 6 ){
+		talkalot_event( TalkEvent::OnStopTalking );
 		return "";
 	}
 
@@ -24,8 +28,10 @@ std::string TalkAlot::getCurrentString()
 
 std::map<ConversationState, std::vector<std::string>> responses = {
 	{ConversationState::WaitingForLoading, {""}},
-	{ConversationState::Saluting, {"The watchers will watch you fight","Oh, a fine fighter from Earth", "You would do a fine adition to our forces"}},
+	{ConversationState::Saluting, {"The watchers will watch you fight","Oh, a fine fighter from Earth", "You would be a fine adition to our forces", "Wellcome Ranger"}},
 	{ConversationState::WaitingEvent, {""}},
+	{ConversationState::DEBUG_small_num, {"Thats a small number you got."}},
+	{ConversationState::LowGravity, {"The gravity is getting eaten"}},
 };
 	
 
@@ -49,20 +55,39 @@ void TalkAlot::updateMessage()
 	lastMsg = possibleResponses[index];
 }
 
-void TalkAlot::handleEvent(TalkEvent event){
+void TalkAlot::handleEvent(TalkEvent event)
+{
 	if(currentState == ConversationState::WaitingForLoading){
 		if(event == TalkEvent::Loaded){
-			Con_Printf("[debug] Was waiting, now will salute\n");
+			//Con_Printf("[debug] Was waiting, now will salute\n");
 			currentState = ConversationState::Saluting;			
 			updateMessage();
 			return;
 		}	
 	}
 
-	//Con_Printf("[debug] waiting... %f\n", current_time() );
+	if ( event == TalkEvent::OnSlotsStops){
+		//Con_Printf("New choice made!\n");
+		S_LocalSound ("misc/talk.wav");
+	}
+
+	if ( event == TalkEvent::OnDEBUG_small_num){
+		S_LocalSound ("misc/menu1.wav");
+
+		currentState = ConversationState::LowGravity;			
+		updateMessage();
+
+		sv_gravity.value = 100;
+		return;
+	}
+
+	if (event == TalkEvent::OnStopTalking && currentState == ConversationState::LowGravity){
+		currentState = ConversationState::Waiting;			
+		sv_gravity.value = 800;		
+		return;
+	}
+
 }
-
-
 
 const char * talkalot_getMessage()
 {

@@ -1,5 +1,4 @@
 
-
 extern "C" {
     #include "quakedef.h"
 
@@ -25,16 +24,13 @@ extern "C" {
 
 void onedog_cleanup();
 
-
 static Cabeza* cabeza = nullptr;
-
 
 void onedog_screen_start(){
 	Con_Printf ( va("%cCorruption detected!...\n",2));
 
 	onedog_cleanup();
 }
-
 
 void onedog_cleanup(){
 	if (cabeza != nullptr){
@@ -59,91 +55,25 @@ void onedog_gameplay()
 }
 
 
-
-double last_step_time  = 0;
-int slot_value[3];
-
-double update_slot_raw(int slot, double slot_start_time, double speed) {	
-    double now = current_time();
-    double elapsed = now - slot_start_time;
-
-    if (elapsed >= speed) {
-        slot_value[slot] = rand() % 10; // valor final		
-
-		slot_start_time = now;
-    } 
-	
-	const int delta_aux = 11;
-	const int fontsize_aux = 11;
-	const int padizq_aux = 3;
-
-	const int slot_dx = 17 * slot;
-
-	M_PrintWhiteEx(50 + padizq_aux + slot_dx, 400 - delta_aux, fontsize_aux, va("%d", abs(slot_value[slot]-1)%9 ));
-	M_PrintWhiteEx(50 + padizq_aux + slot_dx, 400 + delta_aux + 5, fontsize_aux, va("%d", (slot_value[slot]+1)%9 ));
-
-	M_PrintEx(50 + slot_dx, 400, 16, va("%d", slot_value[slot]));
-
-	return slot_start_time;
-}
-
-void update_slots(){	
-	static double slot_start_time1 = 0;
-	static double slot_start_time2 = 0;
-	static double slot_start_time3 = 0;    
-	static double started = 0.0;
-	static double speed = 0.01;
-
-	double now = current_time();
-
-	//Like.. after the 2th map
-	if(started>now)
-		started = 0;
-
-	double elapsed = now - started;		
-
-	if (!started)
-		started = now;
-	
-	if (elapsed>8){
-		speed = 0.01;
-		started = now;
-
-		slot_start_time1 = 0;
-		slot_start_time2 = 0;
-		slot_start_time3 = 0;    
-	} else if(elapsed>4){
-		speed = speed + (elapsed-4)/120;
-
-		if(speed>=1){
-			speed = 1;
-		}
-	}
-
-	slot_start_time1 = update_slot_raw(0,slot_start_time1, speed);
-	slot_start_time2 = update_slot_raw(1,slot_start_time2, speed);
-	slot_start_time3 = update_slot_raw(2,slot_start_time3, speed);
-}
-
-
-
 void onedog_overtext_rendering()
 {
 	if (cls.state != ca_connected)// otherwise the game lagsss
 		return;
 
+	// - Corruption level 
 	char text[] = "Corruption level 0%%";
 	M_PrintEx (50, 450, 8,  randomizerText(va(text)) );	
 
+	// - Drawing the Stranger face 
 	//this appear to be in 320-200 screen
 	Sbar_DrawPicAlpha (50, 50, Sbar_getFace(1), 1);//Invis face bg
 	Sbar_DrawPicAlpha (50, 50, Sbar_getFace(2), sin(current_time()*4)/3);//Invis face
 		
+	// - The Stranger text 
 	if( talkalot_getMessage() != nullptr)
-		//M_PrintEx (50+ 32, 50 + 25, 16, talkalot_getMessage());	
 		M_PrintExCorrupted (50+ 32, 50, 16, talkalot_getMessage());	
 
-		// Random numbers that generate events
+	// Random numbers that generate events
 	update_slots();
 }
 

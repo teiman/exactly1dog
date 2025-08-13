@@ -3,15 +3,22 @@
 
 enum class ConversationState {
     WaitingForLoading,
+	RestoringNormality,//would say something like "Restoring normality"
+	Waiting,//Neutral, do nothing state
     Saluting,
     WaitingEvent,
-	Event777
+	Event777,
+	DEBUG_small_num,
+	LowGravity,
 };
 
 
 enum class TalkEvent {
     Loaded,
     On777,
+	OnDEBUG_small_num,
+	OnSlotsStops,
+	OnStopTalking,
 };
 
 class TalkAlot {

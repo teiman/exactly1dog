@@ -19,7 +19,7 @@ float min( float a, float b){
 
 void M_PrintExCorrupted (int cx, int cy, int dim, const char *str)
 {
-	static float init_time = 0;
+	static double init_time = 0;
 	float distort = 0;
 
 	if(current_time() - init_time < 0 )
@@ -28,12 +28,22 @@ void M_PrintExCorrupted (int cx, int cy, int dim, const char *str)
 	if(init_time == 0)
 		init_time = current_time();
 
+	double delta = current_time() - init_time;
 
-	distort = min(1, (current_time() - init_time)*0.8 );
+	distort = min(1, delta*0.8 );
+
+	int is_old = (delta > 5.1);
 
 	while (*str)
 	{
-		Draw_CharacterEx (cx, cy, dim, dim, (*str)+128);
+		double sake = sin(delta+cx*1.03)*2;
+
+		if (is_old){
+			Draw_CharacterEx (cx, cy+sake, dim, dim, (*str)+128);
+		}else{
+			Draw_CharacterEx (cx, cy+sake, dim, dim, (*str));
+		}
+
 		str++;
 		cx += dim * distort;
 	}
